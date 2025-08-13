@@ -18,10 +18,9 @@ exports.createPost = async (req, res) => {
             if (existingTags.length!=tags.length)return res.status(400).send({success:false,message:"TAG NOT FOUND"})
         }
         
-        // const imageUrl=uploadFileToS3(image)
-        const imageUrl=`https://${image.originalname }`
-
-        const post = (await postModel.create({ title, description, image: imageUrl, tags })).populate("tags");
+        const imageUrl=uploadFileToS3(image)
+        // const imageUrl=`https://${image.originalname }`
+        const post = await postModel.create({ title, description, image: imageUrl, tags });
 
         return res.status(201).json({
             success: true,
@@ -40,7 +39,7 @@ exports.createPost = async (req, res) => {
 
 exports.getPosts = async (req, res) => {
     try {
-        let { tags, sort, order, page, limit } = req.query;
+        let { tag, sort, order, page, limit } = req.query;
         page = parseInt(page) || 1;
         limit = parseInt(limit) || 10;
         const skip = (page - 1) * limit;
@@ -50,7 +49,14 @@ exports.getPosts = async (req, res) => {
         if (sort) sortOption[sort] = order === 'desc' ? -1 : 1;
         else sortOption ={ createdAt: -1 };
 
-        const posts = await postModel.find().populate('tags').sort(sortOption).skip(skip).limit(limit);
+        let filterObject={}
+        if (tag){           
+            tag=tag.split(",").map((tag)=> new mongoose.Types.ObjectId(tag))
+            filterObject={tags:{$in:tag}}
+        }
+
+        const posts = await postModel.find(filterObject).populate('tags').sort(sortOption).skip(skip).limit(limit);
+
         return res.status(200).json({
             success: true,
             message: "Posts fetched successfully",
@@ -58,6 +64,7 @@ exports.getPosts = async (req, res) => {
         });
     }
     catch (error) {
+
         return res.status(500).send({
             success: false,
             message: "INTERNAL SERVER ERROR"
