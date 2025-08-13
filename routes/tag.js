@@ -1,10 +1,10 @@
 const express= require('express');
 const router= express.Router();
 
-const { createTag } = require('../controllers/tag');
+const { createTag,getTags } = require('../controllers/tag');
 
 router.post('/create',createTag );
-// router.get('/get',getAllTags);
+router.get('/get',getTags);
 
 
 module.exports=router;
