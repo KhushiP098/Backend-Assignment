@@ -11,7 +11,7 @@ const s3=new S3Client({
 
 
 async function uploadFileToS3(file){
-    const fileKey=file.originalname.split('.')[0]+path.extname(file.originalname);
+    const fileKey=file.originalname;
 
     const params={
         Bucket:process.env.AWS_BUCKET_NAME,
