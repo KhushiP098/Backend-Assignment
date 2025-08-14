@@ -17,8 +17,7 @@ async function uploadFileToS3(file){
         Bucket:process.env.AWS_BUCKET_NAME,
         Key:fileKey,
         Body:file.buffer,
-        ContentType:file.mimetype,
-        ACL:"public-read"
+        ContentType:file.mimetype
     };
 
     try{
@@ -27,6 +26,7 @@ async function uploadFileToS3(file){
         return `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`
     }
     catch(error){
+        console.error("Error uploading file to S3:", error);
         return false;
     }
 }

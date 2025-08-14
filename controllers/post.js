@@ -11,15 +11,16 @@ exports.createPost = async (req, res) => {
         if (!image) return res.status(400).send({ success: false, message: "IMAGE IS REQUIRED!" })
         if (!title || !description) return res.status(400).send({ success: false, message: "ALL FIELDS ARE REQUIRED!" })
         
-        tags=tags.split(",").map((tag)=> new mongoose.Types.ObjectId(tag))
+       
 
         if(tags){
+            tags=tags.split(",").map((tag)=> new mongoose.Types.ObjectId(tag))
             const existingTags=await tagModel.find({_id:{$in:tags}})
             if (existingTags.length!=tags.length)return res.status(400).send({success:false,message:"TAG NOT FOUND"})
         }
         
-        const imageUrl=uploadFileToS3(image)
-        // const imageUrl=`https://${image.originalname }`
+        const imageUrl=await uploadFileToS3(image)
+        if (!imageUrl) return res.status(500).send({ success: false, message: "IMAGE UPLOAD FAILED!" })
         const post = await postModel.create({ title, description, image: imageUrl, tags });
 
         return res.status(201).json({

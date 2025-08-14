@@ -1,7 +1,5 @@
 # BackendAssignment API Documentation
 
-This document provides detailed API documentation for all endpoints, including request/response formats, methods, and descriptions.
-
 
 ## Post Endpoints
 
