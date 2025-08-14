@@ -1,4 +1,9 @@
+
 # BackendAssignment API Documentation
+
+## Deployed API
+
+Live API base URL: [https://backend-assignment-7i85.onrender.com](https://backend-assignment-7i85.onrender.com)
 
 
 ## Post Endpoints
@@ -161,7 +166,3 @@ curl http://localhost:3000/post/get?page=1&limit=5&sort=title&order=asc&tag=tagI
 curl -X POST http://localhost:3000/tag/create -H "Content-Type: application/json" -d '{"name":"Tech"}'
 ```
 
----
-
-## License
-MIT
