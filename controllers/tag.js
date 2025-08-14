@@ -7,8 +7,8 @@ exports.createTag = async (req, res) => {
         if (!name) {
             return res.status(400).send({ success: false, message: "Tag name is required!" });
         }
-
-        const existingTag=await tagModel.find({name});
+        
+        const existingTag=await tagModel.findOne({name:name});
         if(existingTag)return res.status(400).send({success:false,message:"TAG ALREADY EXISTS"})
 
         const tag = await tagModel.create({ name });
@@ -31,7 +31,7 @@ exports.getTags=async (req,res)=>{
     try{
 
         const tags=await tagModel.find({});
-        return res.status(201).json({
+        return res.status(200).json({
             success: true,
             message: "TAGS FETCHED  SUCCESFULLY",
             data:tags
