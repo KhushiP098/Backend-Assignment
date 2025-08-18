@@ -9,7 +9,7 @@ Live API base URL: [https://backend-assignment-7i85.onrender.com](https://backen
 ## Post Endpoints
 
 ### 1. Create Post
-- **URL:** `/post/create`
+- **URL:** `api/v1/post/create`
 - **Method:** `POST`
 - **Request Body:** `multipart/form-data`
   - `title` (string, required)
@@ -31,7 +31,7 @@ Live API base URL: [https://backend-assignment-7i85.onrender.com](https://backen
 ---
 
 ### 2. Get Posts (with Pagination, Sorting, Filtering)
-- **URL:** `/post/get`
+- **URL:** `api/v1/post/get`
 - **Method:** `GET`
 - **Query Parameters:**
   - `page` (number, optional, default: 1)
@@ -53,7 +53,7 @@ Live API base URL: [https://backend-assignment-7i85.onrender.com](https://backen
 ---
 
 ### 3. Filter Posts by Tags
-- **URL:** `/post/filter`
+- **URL:** `api/v1/post/filter`
 - **Method:** `GET`
 - **Request Body:**
   - `tags` (string, comma-separated tag IDs, required)
@@ -71,7 +71,7 @@ Live API base URL: [https://backend-assignment-7i85.onrender.com](https://backen
 ---
 
 ### 4. Search Posts
-- **URL:** `/post/search/:searchKeyword`
+- **URL:** `api/v1/post/search/:searchKeyword`
 - **Method:** `GET`
 - **Response:**
   - **200 OK**
@@ -89,7 +89,7 @@ Live API base URL: [https://backend-assignment-7i85.onrender.com](https://backen
 ## Tag Endpoints
 
 ### 1. Create Tag
-- **URL:** `/tag/create`
+- **URL:** `api/v1/tag/create`
 - **Method:** `POST`
 - **Request Body:**
   - `name` (string, required)
@@ -108,7 +108,7 @@ Live API base URL: [https://backend-assignment-7i85.onrender.com](https://backen
 ---
 
 ### 2. Get All Tags
-- **URL:** `/tag/get`
+- **URL:** `api/v1/tag/get`
 - **Method:** `GET`
 - **Response:**
   - **201 Created**
@@ -149,7 +149,7 @@ Live API base URL: [https://backend-assignment-7i85.onrender.com](https://backen
 
 **Create Post (cURL):**
 ```bash
-curl -X POST http://localhost:3000/post/create \
+curl -X POST http://localhost:3000/api/v1/post/create \
   -F "title=Sample Post" \
   -F "description=This is a post" \
   -F "tags=tagId1,tagId2" \
@@ -158,11 +158,11 @@ curl -X POST http://localhost:3000/post/create \
 
 **Get Posts:**
 ```bash
-curl http://localhost:3000/post/get?page=1&limit=5&sort=title&order=asc&tag=tagId1,tagId2
+curl http://localhost:3000/api/v1/post/get?page=1&limit=5&sort=title&order=asc&tag=tagId1,tagId2
 ```
 
 **Create Tag:**
 ```bash
-curl -X POST http://localhost:3000/tag/create -H "Content-Type: application/json" -d '{"name":"Tech"}'
+curl -X POST http://localhost:3000/api/v1/tag/create -H "Content-Type: application/json" -d '{"name":"Tech"}'
 ```
 

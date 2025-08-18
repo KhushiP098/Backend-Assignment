@@ -30,7 +30,6 @@ exports.createPost = async (req, res) => {
         })
 
     } catch (error) {
-        console.log("error==>", error)
         return res.status(500).send({
             success: false,
             message: "INTERNAL SERVER ERROR"
