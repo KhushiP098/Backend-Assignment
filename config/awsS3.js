@@ -1,4 +1,5 @@
-const {S3Client ,PutObjectCommand} =require("@aws-sdk/client-s3")
+const {S3Client ,PutObjectCommand,GetObjectCommand} =require("@aws-sdk/client-s3")
+const {getSignedUrl}  =require("@aws-sdk/s3-request-presigner")
 require("dotenv").config();
 
 const s3=new S3Client({
@@ -31,4 +32,31 @@ async function uploadFileToS3(file){
     }
 }
 
-module.exports={uploadFileToS3};
+async function uploadPrivateFileToS3(file){
+    const fileKey=file.originalname;
+    const params={
+        Bucket:process.env.AWS_PRIVATE_BUCKET_NAME,
+        Key:fileKey,
+        Body:file.buffer,
+        ContentType:file.mimetype
+    }
+
+    const command=new PutObjectCommand(params)
+   const response= await s3.send(command)
+
+   const url=await getObjectUrl(fileKey)
+   return url;
+}
+
+async function getObjectUrl(key){
+    const params={
+        Bucket:process.env.AWS_PRIVATE_BUCKET_NAME,
+        Key:key
+    }
+    const command=new GetObjectCommand(params)
+
+    const url=await getSignedUrl(s3,command,{expiresIn:60});
+    return url;
+}
+
+module.exports={uploadFileToS3,uploadPrivateFileToS3,getObjectUrl};
