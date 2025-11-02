@@ -1,0 +1,36 @@
+name: CICD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: docker build -t khushbu098/backend_assignment .
+
+      - name: Publish image to Docker Hub
+        run: docker push khushbu098/backend_assignment:latest
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull image from Docker Hub
+        run: docker pull khushbu098/backend_assignment:latest
+
+      - name: Delete old container
+        run: docker rm -f backend_assignment_container || true
+
+      - name: Create and run Docker container
+        run: docker run -d -p 3000:3000 --name backend_assignment_container khushbu098/backend_assignment:latest
