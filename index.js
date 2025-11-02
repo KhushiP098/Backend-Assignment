@@ -18,9 +18,9 @@ connectDB().then(()=>{
 })
 
 
-// app.get('/',(req,res)=>{
-//     return res.send(`<h1>API is up</h1>`);
-// })
+app.get('/',(req,res)=>{
+    return res.send(`<h1>API is up</h1>`);
+})
 
 app.use('/api/v1',routes);
 
